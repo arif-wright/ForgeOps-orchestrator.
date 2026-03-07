@@ -1,0 +1,19 @@
+name: Test ForgeOps Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, linux, x64, orchestrator]
+
+    steps:
+      - name: Print environment info
+        run: |
+          echo "ForgeOps runner is connected"
+          hostname
+          whoami
+          pwd
+          node -v
+          python3 --version
+          codex --version || codex --help
