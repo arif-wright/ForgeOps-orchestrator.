@@ -11,16 +11,20 @@ on:
 jobs:
   codex-task:
     runs-on: [self-hosted, linux, x64, orchestrator]
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Show workspace
+      - name: Verify auth env exists
         run: |
-          echo "Workspace:"
-          pwd
-          ls -la
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "OPENAI_API_KEY is missing"
+            exit 1
+          fi
+          echo "OPENAI_API_KEY is set"
 
       - name: Run Codex task
         run: |
