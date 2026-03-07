@@ -1,0 +1,30 @@
+name: Run Codex Task
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_prompt:
+        description: "Task for Codex to perform"
+        required: true
+        type: string
+
+jobs:
+  codex-task:
+    runs-on: [self-hosted, linux, x64, orchestrator]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Show workspace
+        run: |
+          echo "Workspace:"
+          pwd
+          ls -la
+
+      - name: Run Codex task
+        run: |
+          codex exec \
+            --skip-git-repo-check \
+            --dangerously-bypass-approvals-and-sandbox \
+            "${{ github.event.inputs.task_prompt }}"
