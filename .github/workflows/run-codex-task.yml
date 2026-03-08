@@ -11,10 +11,17 @@ on:
 jobs:
   codex-task:
     runs-on: [self-hosted, linux, x64, orchestrator]
+    env:
+      CODEX_HOME: ${{ runner.temp }}/codex-home
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Prepare isolated Codex home
+        run: |
+          rm -rf "$CODEX_HOME"
+          mkdir -p "$CODEX_HOME"
 
       - name: Run Codex
         uses: openai/codex-action@v1
