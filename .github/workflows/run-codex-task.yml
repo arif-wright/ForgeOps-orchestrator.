@@ -16,8 +16,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Run Codex via official action
+      - name: Run Codex
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           prompt: ${{ github.event.inputs.task_prompt }}
+          safety-strategy: unsafe
+          sandbox: danger-full-access
