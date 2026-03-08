@@ -53,16 +53,28 @@ jobs:
           safety-strategy: unsafe
           sandbox: danger-full-access
 
-      - name: Install Python dependencies
+      - name: Set up Python virtual environment
         shell: bash
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
 
       - name: Validation check
         shell: bash
         run: |
-          python3 -m py_compile src/main.py src/models.py src/planner.py
+          . .venv/bin/activate
+          python -m py_compile src/main.py src/models.py src/planner.py
+
+      - name: Runtime smoke test
+        shell: bash
+        run: |
+          . .venv/bin/activate
+          python -m src.main plan \
+            --title "Refactor logging" \
+            --description "Standardize structured logging across services" \
+            --priority 2
 
       - name: Show changed files
         shell: bash
