@@ -1,1 +1,4 @@
-Add a .gitignore for this Python project that excludes __pycache__/, *.py[cod], .env, and .venv/. Do not modify anything else.
+__pycache__/
+*.py[cod]
+.env
+.venv/
