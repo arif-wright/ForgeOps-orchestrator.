@@ -8,6 +8,7 @@ ForgeOps is a CLI-first Python planning service that builds execution plans from
 - Pydantic models for validated task and plan data
 - Config module for environment-driven settings
 - Structured logging setup for production-oriented logging output
+- Local file-based `RunRepository` for persisting run metadata in `runs/*.json`
 
 ## Setup
 
@@ -34,6 +35,24 @@ python -m src.main plan \
   --description "Standardize structured logging across services" \
   --priority 2
 ```
+
+Use the local run repository (programmatic usage):
+
+```python
+from src.repository import RunRepository
+
+repo = RunRepository("runs")
+repo.save_run("run_001", {"status": "completed", "task": "Refactor logging"})
+run_data = repo.load_run("run_001")
+run_ids = repo.list_runs()
+```
+
+Notes:
+
+- Run metadata is stored as JSON files under `runs/`.
+- `save_run(run_id, data)` writes atomically to reduce partial-write risk.
+- `load_run(run_id)` returns `None` when a run does not exist.
+- `list_runs()` returns known run IDs (filename stems).
 
 ## Configuration
 
